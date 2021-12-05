@@ -4,7 +4,8 @@
  * @Date: 2021/3/22
  -->
 <template>
-  <div class="login-container" :style="'background-image:url('+ Background +');'">
+  <!--  <div class="login-container" :style="'background-image:url('+ Background +');'">-->
+  <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
@@ -115,7 +116,7 @@ export default {
     //   }
     // }
     return {
-      // 设置登录背景图片
+    // 设置登录背景图片
       Background: 'https://cdn.jsdelivr.net/gh/Dorian1015/cdn/img/github/122.jpg',
       loginForm: {
         username: 'admin1',
@@ -192,6 +193,7 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              // this.$message.error('111111111111')
               this.loading = false
             })
             .catch(() => {
@@ -249,6 +251,9 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+  //background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+  //background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
   .el-input {
     display: inline-block;
     height: 47px;

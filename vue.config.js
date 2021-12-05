@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Element Admin' // page title
+const name = defaultSettings.title || '辅导员小助手后台管理系统' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -28,7 +28,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',
-  lintOnSave: false, //关闭语法检测
+  lintOnSave: false, // 关闭语法检测
   productionSourceMap: false,
   devServer: {
     port: port,
