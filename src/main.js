@@ -26,6 +26,10 @@ import 'vxe-table/lib/style.css'
 
 Vue.use(VXETable)
 
+// 导入vxe-table-plugin-export-xlsx
+import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
+VXETable.use(VXETablePluginExportXLSX)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

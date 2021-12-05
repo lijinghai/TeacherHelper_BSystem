@@ -106,32 +106,32 @@ export const constantRoutes = [
 export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   {
-    path: '/error',
+    path: '/import',
     component: Layout,
     redirect: 'noRedirect',
     name: 'mySealMess',
     meta: {
-      title: '用章管理',
+      title: '导入导出',
       icon: 'example'
     },
     children: [
       {
         path: 'page1',
         component: () => import('@/views/myseal/mysealMess/page1'),
-        name: '用章申请',
-        meta: { title: '用章申请', noCache: true }
+        name: '导入导出1',
+        meta: { title: '导入导出1', noCache: true }
       },
       {
         path: 'page2',
         component: () => import('@/views/myseal/mysealMess/page2'),
-        name: '申请记录',
-        meta: { title: '申请记录', noCache: true }
+        name: '导入导出2',
+        meta: { title: '导入导出2', noCache: true }
       },
       {
         path: 'page3',
         component: () => import('@/views/myseal/mysealMess/page3'),
-        name: '使用记录',
-        meta: { title: '使用记录', noCache: true }
+        name: '导入导出3',
+        meta: { title: '导入导出3', noCache: true }
       }
     ]
   }
