@@ -36,7 +36,7 @@ export default {
     console.log('             \____/             ( ( __))')
     console.log(' ')
     console.log('my Email : lijinghailjh@163.com')
-    console.log('my Github: https://github.com/Dorian1015')
+    console.log('my Github: https://github.com/lijinghailjh')
     console.log('( ͡° ͜ʖ ͡°)✧ *************************************************************')
     console.log(' ')
   }

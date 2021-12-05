@@ -90,7 +90,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: '辅利Helper',
+    title: '嗨!珀尔',
     logIn: '登录',
     username: '账号',
     password: '密码',

@@ -36,7 +36,7 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/Dorian1015">
+          <a target="_blank" href="https://github.com/lijinghailjh">
             <el-dropdown-item>
               {{ $t('navbar.github') }}
             </el-dropdown-item>
