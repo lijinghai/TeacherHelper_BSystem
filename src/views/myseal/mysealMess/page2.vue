@@ -153,6 +153,8 @@ export default {
       this.$refs.xTable.importData(
         { types: ['xls', 'xlsx'] }
       )
+      console.log('this.tableData')
+      console.log(this.tableData)
     }
   }
 }
