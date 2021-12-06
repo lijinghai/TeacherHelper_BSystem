@@ -4,7 +4,8 @@
 @Date: 2021/3/22
 -->
 <template>
-  <div class="login" :style="'background-image:url('+ Background +');'">
+  <!--  <div class="login" :style="'background-image:url('+ Background +');'">-->
+  <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
       <h3 class="title">
         {{ $t('login.title') }}
@@ -225,6 +226,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
 .login {
+  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
   display: flex;
   justify-content: center;
   align-items: center;
