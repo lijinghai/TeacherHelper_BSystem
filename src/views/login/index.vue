@@ -1,104 +1,62 @@
 <!--
- * @Description: 登录页面
- * @Author: lijinghailjh@163.com
- * @Date: 2021/3/22
- -->
+@Description: 登录页面
+@Author: lijinghailjh@163.com
+@Date: 2021/3/22
+-->
 <template>
-  <!--  <div class="login-container" :style="'background-image:url('+ Background +');'">-->
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">
-          {{ $t('login.title') }}
-        </h3>
-        <lang-select class="set-language" style="color: #646565" />
-      </div>
-
+  <div class="login" :style="'background-image:url('+ Background +');'">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
+      <h3 class="title">
+        {{ $t('login.title') }}
+      </h3>
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          :placeholder="$t('login.username')"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="off"
-        />
+        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+        </el-input>
       </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            :placeholder="$t('login.password')"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
-        {{ $t('login.logIn') }}
-      </el-button>
-
-      <div style="position:relative">
-        <!--        <div class="tips">-->
-        <!--          <span>{{ $t('login.username') }} : admin</span>-->
-        <!--          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
-        <!--        </div>-->
-        <!--        <div class="tips">-->
-        <!--          <span style="margin-right:18px;">-->
-        <!--            {{ $t('login.username') }} : editor-->
-        <!--          </span>-->
-        <!--          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
-        <!--        </div>-->
-        注册
-        <!--        <el-button class="thirdparty-button1" type="primary" @click="showDialog=true">-->
-        <!--          注册-->
-        <!--        </el-button>-->
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          {{ $t('login.thirdparty') }}
+      <el-form-item prop="password">
+        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+        </el-input>
+      </el-form-item>
+      <!--验证码-->
+      <!--      <el-form-item prop="code">-->
+      <!--        <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter.native="handleLogin">-->
+      <!--          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />-->
+      <!--        </el-input>-->
+      <!--        <div class="login-code">-->
+      <!--          <img :src="codeUrl" @click="getCode">-->
+      <!--        </div>-->
+      <!--      </el-form-item>-->
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px 0;">
+        记住我
+      </el-checkbox>
+      <el-form-item style="width:100%;">
+        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+          <span v-if="!loading">登 录</span>
+          <span v-else>登 录 中...</span>
         </el-button>
-      </div>
-
+      </el-form-item>
     </el-form>
-
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
-      {{ $t('login.thirdpartyTips') }}
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
+    <!--  底部  -->
+    <div v-if="$store.state.settings.showFooter" id="el-login-footer">
+      <span v-html="$store.state.settings.footerTxt" />
+      <span> ⋅ </span>
+      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+    </div>
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 // eslint-disable-next-line no-unused-vars
 import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
 // import Background from '@/assets/images/background.jpg'
-
 export default {
   name: 'Login',
+  // eslint-disable-next-line vue/no-unused-components
   components: { LangSelect, SocialSign },
   data() {
     // const validateUsername = (rule, value, callback) => {
@@ -116,7 +74,7 @@ export default {
     //   }
     // }
     return {
-    // 设置登录背景图片
+      // 设置登录背景图片
       Background: 'https://cdn.jsdelivr.net/gh/Dorian1015/cdn/img/github/122.jpg',
       loginForm: {
         username: 'admin1',
@@ -147,14 +105,18 @@ export default {
     }
   },
   created() {
+    // 获取用户名密码等Cookie
+    this.getCookie()
+    // token 过期提示
+    this.point()
     // window.addEventListener('storage', this.afterQRScan)
     console.log(' __    _         _   _                       __               _')
     console.log('[  |  (_)       (_) (_)                     [  |             (_)')
     console.log(' | |  __        __  __   _ .--.   .--./)     | |--.   ,--.   __')
-    console.log(' | | [  |      [  |[  | [ `.-. | / /`\;       | .-. | ``_\ : [  |')
-    console.log(' | |  | |    _  | | | |  | | | | \ \._//       | | | | // | |, | |')
-    console.log('[___][___]  [ \_| |[___][___||__].,__`       [___]|__]\`-;__/[___]')
-    console.log('             \____/             ( ( __))')
+    console.log(' | | [  |      [  |[  | [ .-. | / /;       | .-. | ``_\ : [  |')
+    console.log(' | |  | |    _  | | | |  | | | | \ ._//       | | | | // | |, | |')
+    console.log('[___][___]  [ _| |[___][___||__].,__       [___]|__]\-;__/[___]')
+    console.log('             ____/             ( ( __))')
     console.log(' ')
     console.log('my Email : lijinghailjh@163.com')
     console.log('my Github: https://github.com/lijinghailjh')
@@ -172,6 +134,20 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    getCookie() {
+      const username = Cookies.get('username')
+      let password = Cookies.get('password')
+      const rememberMe = Cookies.get('rememberMe')
+      // 保存cookie里面的加密后的密码
+      this.cookiePass = password === undefined ? '' : password
+      password = password === undefined ? this.loginForm.password : password
+      this.loginForm = {
+        username: username === undefined ? this.loginForm.username : username,
+        password: password,
+        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
+        code: ''
+      }
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -212,6 +188,18 @@ export default {
         }
         return acc
       }, {})
+    },
+    point() {
+      const point = Cookies.get('point') !== undefined
+      if (point) {
+        this.$notify({
+          title: '提示',
+          message: '当前登录状态已过期，请重新登录！',
+          type: 'warning',
+          duration: 5000
+        })
+        Cookies.remove('point')
+      }
     }
     // afterQRScan() {
     //   if (e.key === 'x-admin-oauth-code') {
@@ -235,148 +223,48 @@ export default {
 }
 </script>
 
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-$bg:#283443;
-$light_gray: #4c4a4a;
-$cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
+<style rel="stylesheet/scss" lang="scss">
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-size: cover;
+}
+.title {
+  margin: 0 auto 30px auto;
+  text-align: center;
+  color: #707070;
 }
 
-/* reset element-ui css */
-.login-container {
-  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
-  //background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
-  //background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+.login-form {
+  border-radius: 6px;
+  background: #ffffff;
+  width: 385px;
+  padding: 25px 25px 5px 25px;
   .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
+    height: 38px;
     input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
+      height: 38px;
     }
   }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
+  .input-icon{
+    height: 39px;width: 14px;margin-left: 2px;
   }
 }
-</style>
-
-<style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray: #726d6d;
-
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  background-color: $bg;
-  overflow: hidden;
-
-  .login-form {
-    position: relative;
-    max-width: 100%;
-    margin: 0 auto;
-    //设置登录框位置
-    //top: 273px;
-    top: 179px;
-    overflow: hidden;
-    border-radius: 6px;
-    background: #ffffff;
-    width: 385px;
-    padding: 25px 25px 5px 25px;
-    .el-input {
-      height: 38px;
-      input {
-        height: 38px;
-      }
-    }
-    .input-icon{
-      height: 39px;width: 14px;margin-left: 2px;
-    }
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #111111;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-
-  .title-container {
-    position: relative;
-
-    .title {
-      margin: 0 auto 30px auto;
-      text-align: center;
-      color: #707070;
-    }
-
-    .set-language {
-      color: #181717;
-      position: absolute;
-      top: 3px;
-      font-size: 18px;
-      right: 0px;
-      cursor: pointer;
-    }
-  }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
+.login-tip {
+  font-size: 13px;
+  text-align: center;
+  color: #bfbfbf;
+}
+.login-code {
+  width: 33%;
+  display: inline-block;
+  height: 38px;
+  float: right;
+  img{
     cursor: pointer;
-    user-select: none;
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
+    vertical-align:middle
   }
 }
 </style>
