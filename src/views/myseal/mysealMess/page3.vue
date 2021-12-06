@@ -9,6 +9,10 @@
         <vxe-button @click="align = 'left'">居左</vxe-button>
         <vxe-button @click="align = 'center'">居中</vxe-button>
         <vxe-button @click="align = 'right'">居右</vxe-button>
+
+        <vxe-button icon="fa fa-plus" status="perfect" content="新增" />
+        <vxe-button icon="fa fa-trash-o" status="perfect" content="删除" />
+        <vxe-button icon="fa fa-save" status="perfect" content="保存" />
       </template>
     </vxe-toolbar>
 

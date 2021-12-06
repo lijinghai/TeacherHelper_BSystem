@@ -81,13 +81,13 @@ VXETable.setup({
     MODAL_LOADING: 'vxe-icon--refresh roll',
 
     // toolbar
-    TOOLBAR_TOOLS_REFRESH: 'vxe-icon--refresh',
+    TOOLBAR_TOOLS_REFRESH: 'fa fa-refresh',
     TOOLBAR_TOOLS_REFRESH_LOADING: 'vxe-icon--refresh roll',
-    TOOLBAR_TOOLS_IMPORT: 'vxe-icon--upload',
-    TOOLBAR_TOOLS_EXPORT: 'vxe-icon--download',
-    TOOLBAR_TOOLS_ZOOM_IN: 'vxe-icon--zoomin',
-    TOOLBAR_TOOLS_ZOOM_OUT: 'vxe-icon--zoomout',
-    TOOLBAR_TOOLS_CUSTOM: 'vxe-icon--menu',
+    TOOLBAR_TOOLS_IMPORT: 'fa fa-upload',
+    TOOLBAR_TOOLS_EXPORT: 'fa fa-download',
+    TOOLBAR_TOOLS_ZOOM_IN: 'fa fa-arrows-alt',
+    TOOLBAR_TOOLS_ZOOM_OUT: 'fa fa-expand',
+    TOOLBAR_TOOLS_CUSTOM: 'fa fa-cog',
 
     // form
     FORM_PREFIX: 'vxe-icon--info',
