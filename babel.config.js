@@ -9,6 +9,16 @@ module.exports = {
       // This plugin can significantly increase the speed of hot updates, when you have a large number of pages.
       // https://panjiachen.github.io/vue-element-admin-site/guide/advanced/lazy-loading.html
       'plugins': ['dynamic-import-node']
+      // 'plugins': [
+      //   [
+      //     'dynamic-import-node',
+      //     'import',
+      //     {
+      //       'libraryName': 'vxe-table',
+      //       'style': true // 样式是否也按需加载
+      //     }
+      //   ]
+      // ]
     }
   }
 }

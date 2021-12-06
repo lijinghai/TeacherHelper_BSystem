@@ -1,134 +1,76 @@
 <!--用章管理-->
 <template>
   <div>
-    <vxe-grid v-bind="gridOptions">
-      <template #name_edit="{ row }">
-        <vxe-input v-model="row.name" />
+
+    <vxe-toolbar>
+      <template #buttons>
+        <vxe-input v-model="filterName" type="search" placeholder="试试全表搜索" @keyup="searchEvent1" />
       </template>
-      <template #nickname_edit="{ row }">
-        <vxe-input v-model="row.nickname" />
-      </template>
-      <template #role_edit="{ row }">
-        <vxe-input v-model="row.role" />
-      </template>
-      <template #address_edit="{ row }">
-        <vxe-input v-model="row.address" />
-      </template>
+    </vxe-toolbar>
+
+    <vxe-table
+      border
+      height="300"
+      :data="list1"
+    >
+      <vxe-column type="seq" width="80" />
+      <vxe-column field="name" title="Name" type="html" />
+      <vxe-column field="role" title="Role" type="html" />
+      <vxe-column field="age" title="Age" type="html" />
+      <vxe-column field="address" title="Address" type="html" />
       <template #empty>
         <span style="color: red;">
           <img src="/img/img2.gif">
           <p>没有更多数据了！</p>
         </span>
       </template>
-    </vxe-grid>
+    </vxe-table>
   </div>
 </template>
 
 <script>
+import XEUtils from 'xe-utils'
+
 export default {
   data() {
     return {
-      gridOptions: {
-        border: true,
-        resizable: true,
-        keepSource: true,
-        height: 500,
-        printConfig: {},
-        importConfig: {},
-        exportConfig: {},
-        pagerConfig: {
-          perfect: true,
-          pageSize: 15
-        },
-        editConfig: {
-          trigger: 'click',
-          mode: 'row',
-          showStatus: true
-        },
-        toolbarConfig: {
-          buttons: [
-            { code: 'insert_actived', name: '新增', status: 'perfect', icon: 'fa fa-plus' },
-            { code: 'mark_cancel', name: '标记/取消', status: 'perfect', icon: 'fa fa-trash-o' },
-            { code: 'save', name: '保存', status: 'perfect', icon: 'fa fa-save' }
-          ],
-          perfect: true,
-          refresh: {
-            icon: 'fa fa-refresh',
-            iconLoading: 'fa fa-spinner fa-spin'
-          },
-          import: {
-            icon: 'fa fa-upload'
-          },
-          export: {
-            icon: 'fa fa-download'
-          },
-          print: {
-            icon: 'fa fa-print'
-          },
-          zoom: {
-            iconIn: 'fa fa-arrows-alt',
-            iconOut: 'fa fa-expand'
-          },
-          custom: {
-            icon: 'fa fa-cog'
-          }
-        },
-        proxyConfig: {
-          props: {
-            result: 'result',
-            total: 'page.total'
-          },
-          ajax: {
-            // 接收 Promise
-            query: ({ page }) => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  const list = []
-                  resolve({
-                    page: {
-                      total: list.length
-                    },
-                    result: list.slice((page.currentPage - 1) * page.pageSize, page.currentPage * page.pageSize)
-                  })
-                }, 100)
-              })
-            },
-            // body 对象： { removeRecords }
-            delete: () => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  resolve({})
-                }, 100)
-              })
-            },
-            // body 对象： { insertRecords, updateRecords, removeRecords, pendingRecords }
-            save: () => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  resolve({})
-                }, 100)
-              })
-            }
-          }
-        },
-        columns: [
-          { type: 'checkbox', width: 50 },
-          { type: 'seq', width: 60 },
-          { field: '学号', title: '学号', editRender: { autofocus: '.vxe-input--inner' }, slots: { edit: 'name_edit' }},
-          { field: '姓名', title: '姓名', editRender: {}, slots: { edit: 'nickname_edit' }},
-          { field: '性别', title: '性别', editRender: {}, slots: { edit: 'role_edit' }},
-          { field: '联系电话', title: '联系电话', showOverflow: true, editRender: {}, slots: { edit: 'address_edit' }},
-          { field: '班级', title: '班级', showOverflow: true, editRender: {}, slots: { edit: 'address_edit' }}
-        ]
-      }
+      list1: [],
+      filterName: '',
+      tableData: [
+        { id: 10001, name: 'Test1', role: 'Develop', sex: '0', age: 28, amount: 888, address: 'test abc' },
+        { id: 10002, name: 'Test2', role: 'Test', sex: '1', age: 22, amount: 666, address: 'Guangzhou' },
+        { id: 10003, name: 'Test3', role: 'PM', sex: '1', age: 32, amount: 89, address: 'Shanghai' },
+        { id: 10004, name: 'Test4', role: 'Designer', sex: '0', age: 23, amount: 1000, address: 'test abc' },
+        { id: 10005, name: 'Test5', role: 'Develop', sex: '0', age: 30, amount: 999, address: 'Shanghai' },
+        { id: 10006, name: 'Test6', role: 'Designer', sex: '0', age: 21, amount: 998, address: 'test abc' },
+        { id: 10007, name: 'Test7', role: 'Test', sex: '1', age: 29, amount: 2000, address: 'test abc' },
+        { id: 10008, name: 'Test8', role: 'Develop', sex: '1', age: 35, amount: 999, address: 'test abc' },
+        { id: 10009, name: 'Test9', role: 'Test', sex: '1', age: 26, amount: 2000, address: 'test abc' },
+        { id: 100010, name: 'Test10', role: 'Develop', sex: '1', age: 21, amount: 666, address: 'test abc' }
+      ]
     }
   },
   created() {
-    this.loading = true
-    setTimeout(() => {
-      this.tableData = []
-      this.loading = false
-    }, 1000)
+    this.searchEvent1()
+  },
+  methods: {
+    searchEvent1() {
+      const filterName = XEUtils.toValueString(this.filterName).trim().toLowerCase()
+      if (filterName) {
+        const filterRE = new RegExp(filterName, 'gi')
+        const searchProps = ['name', 'role', 'age', 'address']
+        const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(filterName) > -1))
+        this.list1 = rest.map(row => {
+          const item = Object.assign({}, row)
+          searchProps.forEach(key => {
+            item[key] = XEUtils.toValueString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+          })
+          return item
+        })
+      } else {
+        this.list1 = this.tableData
+      }
+    }
   }
 }
 
